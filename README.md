@@ -428,6 +428,13 @@ smartcontract/ignition/deployments/chain-31337/deployed_addresses.json
 
 Copy those addresses into `backend/.env`.
 
+Then the deployed smart contract abi have to be added on a specific backend path:
+
+```bash
+cd smartcontract
+cp artifacts/contracts/Multisig_1.sol/Multisig_1.json artifacts/contracts/Stablecoin.sol/Stablecoin.json ../backend/src/abi
+```
+
 ### Start backend
 
 ```bash
