@@ -1,0 +1,42 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/prisma/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum OperationType {
+    MINT
+    BURN
+    FREEZE
+}
+
+enum MultisigKind {
+    MINT_BURN
+    ADMIN
+}
+
+model ApiTxMapping {
+    id            String        @id @default(uuid())
+    operationType OperationType
+    multisigKind  MultisigKind
+    multisigTxId  BigInt
+    createdAt     DateTime      @default(now())
+
+    @@unique([multisigKind, multisigTxId])
+}
+
+model ChainEvent {
+    id              String   @id @default(uuid())
+    contractAddress String
+    eventName       String
+    txHash          String
+    blockNumber     BigInt
+    logIndex        Int
+    payload         Json
+    createdAt       DateTime @default(now())
+
+    @@unique([txHash, logIndex])
+}
