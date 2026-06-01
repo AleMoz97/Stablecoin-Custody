@@ -15,7 +15,7 @@ async function bootstrap() {
   );
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('PwC Stablecoin & Custody PoC')
+    .setTitle('Stablecoin & Custody')
     .setDescription('Minimal NestJS API for mint, burn, freeze, status and balance operations.')
     .setVersion('1.0')
     .build();
