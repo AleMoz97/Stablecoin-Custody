@@ -205,7 +205,6 @@ export class BlockchainService {
         // mando la transazione al multisig
         const tx = await multisig.submitTransaction(
             this.stablecoinAddress,
-            0,
             input.calldata,
         );
 
