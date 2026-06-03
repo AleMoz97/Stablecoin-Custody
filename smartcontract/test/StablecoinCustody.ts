@@ -28,7 +28,7 @@ async function submitAndConfirm(
   data: string,
 ) {
   const txId = await multisig.transactionCount();
-  await multisig.connect(submitter).submitTransaction(target, 0, data);
+  await multisig.connect(submitter).submitTransaction(target, data);
   await multisig.connect(confirmer).confirmTransaction(txId);
   return txId;
 }
@@ -51,7 +51,7 @@ describe("stablecoin custody", function () {
     const amount = 1_000_000n;
     const data = token.interface.encodeFunctionData("mint", [alice.address, amount]);
 
-    await mintBurnMultisig.connect(owner0).submitTransaction(tokenAddress, 0, data);
+    await mintBurnMultisig.connect(owner0).submitTransaction(tokenAddress, data);
 
     const pending = await mintBurnMultisig.getTransaction(0);
     expect(pending.executed).to.equal(false);
@@ -74,7 +74,7 @@ describe("stablecoin custody", function () {
     );
 
     await expect(
-      mintBurnMultisig.connect(admin0).submitTransaction(await token.getAddress(), 0, "0x"),
+      mintBurnMultisig.connect(admin0).submitTransaction(await token.getAddress(), "0x"),
     ).to.be.revertedWithCustomError(mintBurnMultisig, "NotOwner").withArgs(admin0.address);
   });
 
@@ -109,7 +109,7 @@ describe("stablecoin custody", function () {
 
     const txId = await adminMultisig.transactionCount();
 
-    await adminMultisig.connect(admin0).submitTransaction(tokenAddress, 0, data);
+    await adminMultisig.connect(admin0).submitTransaction(tokenAddress, data);
 
     await expect(adminMultisig.connect(admin1).confirmTransaction(txId))
       .to.be.revertedWithCustomError(adminMultisig, "TransactionCallFailed")
@@ -124,7 +124,7 @@ describe("stablecoin custody", function () {
 
     const txId = await mintBurnMultisig.transactionCount();
 
-    await mintBurnMultisig.connect(owner0).submitTransaction(tokenAddress, 0, data);
+    await mintBurnMultisig.connect(owner0).submitTransaction(tokenAddress, data);
 
     await expect(mintBurnMultisig.connect(owner1).confirmTransaction(txId))
       .to.be.revertedWithCustomError(mintBurnMultisig, "TransactionCallFailed")
